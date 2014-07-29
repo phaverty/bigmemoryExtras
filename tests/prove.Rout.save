@@ -1,0 +1,92 @@
+
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> require("bigmemoryExtras") || stop("unable to load bigmemoryExtras package")
+Loading required package: bigmemoryExtras
+Loading required package: bigmemory
+Loading required package: bigmemory.sri
+Loading required package: BH
+
+bigmemory >= 4.0 is a major revision since 3.1.2; please see packages
+biganalytics and and bigtabulate and http://www.bigmemory.org for more information.
+
+[1] TRUE
+> bigmemoryExtras:::.test()
+Note: no visible binding for global variable '.xData' 
+Note: no visible binding for global variable 'object' 
+Note: no visible binding for global variable '.xData' 
+Note: no visible binding for global variable '.xData' 
+Note: no visible binding for global variable '.xData' 
+Attaching to on-disk data:/tmp/Rtmpvp2xij/file6f6030905843...
+
+Attaching to on-disk data:/tmp/Rtmpvp2xij/file6f6030905843...
+
+Attaching to on-disk data:/tmp/Rtmpvp2xij/bigmat/ds...
+
+Attaching to on-disk data:/tmp/Rtmpvp2xij/bigmat/ds...
+
+Loading required package: Biobase
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: 'BiocGenerics'
+
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following object is masked from 'package:stats':
+
+    xtabs
+
+The following objects are masked from 'package:base':
+
+    Filter, Find, Map, Position, Reduce, anyDuplicated, as.data.frame,
+    cbind, colnames, duplicated, eval, get, intersect, lapply, mapply,
+    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int, rank,
+    rbind, rep.int, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unlist
+
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+
+
+RUNIT TEST PROTOCOL -- Fri Aug  9 09:52:34 2013 
+*********************************************** 
+Number of test functions: 15 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+bigmemoryExtras RUnit Tests - 15 test functions, 0 errors, 0 failures
+Number of test functions: 15 
+Number of errors: 0 
+Number of failures: 0 
+Warning message:
+In attach.resource(obj, ...) :
+  big.matrix object could only be opened read-only.
+> 
+> proc.time()
+   user  system elapsed 
+  6.372   0.144   6.613 

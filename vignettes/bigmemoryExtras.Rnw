@@ -1,0 +1,156 @@
+%\VignetteIndexEntry{bigmemoryExtras}
+%\VignetteDepends{}
+%\VignetteKeywords{bigmemoryExtras}
+\documentclass[10pt]{article}
+
+\usepackage{times}
+\usepackage{hyperref}
+\usepackage{Sweave}
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+
+\textwidth=6.5in
+\textheight=8.5in
+\oddsidemargin=-.1in
+\evensidemargin=-.1in
+\headheight=-.3in
+
+\title{An Introduction to the bigmemoryExtras Package}
+\author{Peter M. Haverty}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+<<<options,echo=FALSE>>=
+  options(width=90)
+@
+
+\section{Introduction}
+This package defines a "BigMatrix" ReferenceClass which adds safety and convenience features to the filebacked.big.matrix class from the
+bigmemory package. BigMatrix protects against segfaults by monitoring
+and gracefully restoring the connection to on-disk data. We provide utilities for using BigMatrix-derived
+classes as assayData matrices within the Biobase package's eSet family
+of classes. BigMatrix provides some optimizations related to attaching
+to, and indexing into, file-backed matrices with
+dimnames. Additionally, the package provides a "BigMatrixFactor"
+class, a file-backed matrix with factor properties.
+
+<<introcode>>=
+library(bigmemoryExtras)
+data.file = file.path(tempdir(),"bigmat","ds")
+x = matrix(1:9,ncol=3,dimnames=list(letters[1:3],LETTERS[1:3]))
+ds = BigMatrix(x,data.file)
+ds[,1] = 3:1
+ds[,1]
+@
+
+\section{Re-attaching to on-disk data as necessary}
+When a big.matrix object is attached to it's on-disk data, an external
+pointer is used to connect the R object to a C++ data structure. When
+a big.matrix object is not attached, like when it is loaded from an RData
+file, this pointer is nil. Any access to this nil pointer will crash
+R. The bigmemoryExtras package provides a BigMatrix class that prevents such
+a crash by
+controlling access to the external pointer. Additionally, BigMatrix
+objects remember the location of their on-disk components and
+automatically re-attach themselves as necessary.
+
+This kind of thing would be helpful if you, for example, chose to save
+your new BigMatrix object to disk for later use.  You might save your
+object using R's built in save or saveRDS functions.
+
+<<reattach>>=
+ds$backingfile
+saveRDS(ds,file=file.path(tempdir(),"foo.rds"))
+new.ds = readRDS(file=file.path(tempdir(),"foo.rds"))
+new.ds[1:2,2:3]
+@
+
+\section{S4 Style Access}
+The BigMatrix class uses R's Reference Class system. Any change to the
+matrix portion of the data has on-disk side effects, so it seems
+natural that any other changes to the object should have the same
+behavior. In order to give BigMatrix the same API as a base matrix or
+big.matrix class, certain S4-style methods are provided.
+ReferenceClass objects are relatively new to R and unfamiliar to many
+users, so you may want to review the ReferenceClasses help page.
+
+<<S4methods>>=
+nrow(ds)
+ds$nrow()
+ncol(ds)
+ds$ncol()
+dim(ds)
+ds$dim()
+dimnames(ds)
+ds$dimnames()
+length(ds)
+ds$length()
+@
+
+\section{BigMatrixFactor}
+The bigmemoryExtras package adds a ``BigMatrixFactor'' class to provide a
+means to store large matrices of characters. On the file system, these
+are stored as the C type char or int (8 or 32 bits), depending on the number of
+levels in the factor. Subsetting a BigMatrixFactor returns a factor. If more than one column is returned, the returned object is a factor matrix.
+
+<<factorcode>>=
+data.file = file.path(tempdir(),"bigmat","fs")
+x = matrix( c(rep("AA",5),rep("BB",4)) ,ncol=3,dimnames=list(letters[1:3],LETTERS[1:3]))
+fs = BigMatrixFactor(x,data.file,levels=c("AA","BB"))
+fs[,]
+as(fs,"matrix")
+fs$levels
+levels(fs)
+fs[, 2]
+fs[, 2:3]
+@
+
+\section{Use with GenomicRanges and SummarizedExperiment-derived Classes}
+
+Either class can be used as an assay in the assays slot
+of the GenomicRanges SummarizedExperiment-derived classes. We provide utility
+functions to deal with relocated BigMatrix in such a container.
+
+<<se>>=
+library(GenomicRanges)
+se = SummarizedExperiment(assays=list(a=ds, b=fs))
+assays(se)[["a"]]
+new.dir = file.path(tempdir(),"newbigmat")
+dir.create(new.dir,showWarnings=FALSE)
+file.copy(ds$backingfile, new.dir)
+file.copy(fs$backingfile, new.dir)
+assays(se) = updateBackingfiles(assays(se), new.dir)
+assays(se)[["b"]]$backingfile
+@
+
+\section{Use with Biobase and eSet-derived Classes}
+We are phasing out Biobase and eSet in favor of GenomicRanges and
+SummarizedExperiment, but in the mean time ...
+
+Either class can be used as an assayDataElement in the assayData slot
+of the familiar BioConductor eSet-derived classes. We provide utility
+functions to deal with relocated BigMatrix files.
+
+<<eset>>=
+library(Biobase)
+eset = ExpressionSet()
+data.file = file.path(tempdir(),"bigmat","ds")
+x = matrix(1:9,ncol=3,dimnames=list(letters[1:3],LETTERS[1:3]))
+ds = BigMatrix(x,data.file)
+assayDataElement(eset,"exprs") = ds
+exprs(eset)[1:2,2:3]
+
+new.dir = file.path(tempdir(),"newbigmat")
+dir.create(new.dir,showWarnings=FALSE)
+file.copy(ds$backingfile, new.dir)
+assayData(eset) = updateBackingfiles(assayData(eset), new.dir)
+assayDataElement(eset,"exprs")$backingfile
+@
+
+\end{document}

@@ -1,0 +1,11 @@
+
+# TODO
+#  Think of more setValidity checks
+#  Relocate method that moves files *carefully* and resets descpath
+#  Use ds$methods("foo" ... to set methods rather than all at once, for readability
+#  Setter for levels?  Would that modify data?
+#  Move dimnames to BigMatrix object?
+#    Getters and setters, save on set, save .self in foo.desc.rds?
+#    Use getters for "[" by character
+#    Add names upon "["
+#  normalizePath on incoming descpath, validObject afterwards?
