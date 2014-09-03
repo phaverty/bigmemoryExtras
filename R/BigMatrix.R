@@ -197,7 +197,7 @@ BigMatrixGenerator <- setRefClass("BigMatrix",
                            },
                            show=function() {
                              message( class(.self),
-                                     "\nbackingfile :", .self$backingfile, "\n",
+                                     "\nbackingfile: ", .self$backingfile, "\n",
                                      "dim: ", paste(.self$dim(), collapse=", ")
                                      )
                              if (!is.null(.self$rownames())) {
