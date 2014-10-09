@@ -3,7 +3,7 @@
 ##############################
 ###  Class BigMatrixFactor ###
 ##############################
-
+##' @exportClass BigMatrixFactor
 BigMatrixFactorGenerator <- setRefClass("BigMatrixFactor",
                              contains="BigMatrix",
                                fields=list(

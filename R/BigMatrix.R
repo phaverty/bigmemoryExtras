@@ -34,6 +34,7 @@ NULL
 ########################
 ###  Class BigMatrix ###
 ########################
+##' @exportClass BigMatrix
 setClassUnion("characterOrNull",c("character","NULL"))
 BigMatrixGenerator <- setRefClass("BigMatrix",
                          fields=list(
