@@ -15,8 +15,12 @@ NULL
 ##' @param object a BigMatrix
 setMethod("annotatedDataFrameFrom", signature(object="BigMatrix"),
           function(object) {
-              .Deprecated("nothing", msg="All eSet-related content is being deprecated.")
-              return(Biobase:::annotatedDataFrameFromMatrix(object))
+#              .Deprecated("nothing", msg="All eSet-related content is being deprecated.")
+              df = AnnotatedDataFrame(
+                  data=data.frame(row.names=rownames(object)),
+                  dimLabels=c("sampleNames", "sampleColumns")
+                  )
+              return(df)
           })
 
 ##' Attach on-disk matrices into assayData
