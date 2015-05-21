@@ -2,7 +2,7 @@ Package: bigmemoryExtras
 Type: Package
 Title: An extension of the bigmemory package with added safety, convenience,
     and a factor class.
-Version: 1.13.1
+Version: 1.13.2
 Author: Peter M. Haverty
 Maintainer: Peter M. Haverty <phaverty@gene.com>
 Description: This package defines a "BigMatrix" ReferenceClass which adds

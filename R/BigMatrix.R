@@ -333,7 +333,7 @@ setMethod("apply",signature(X="BigMatrix"),
       type=type,
       backingfile=basename(backingfile),
       descriptorfile=basename(descriptorfile),
-      backingpath=backingpath,
+      backingpath=normalizePath(backingpath),
       dimnames=NULL)
   } else {
     stop("Argument x must be a scalar numeric, matrix, or big.matrix.\n")
@@ -341,9 +341,6 @@ setMethod("apply",signature(X="BigMatrix"),
   unlink(file.path(backingpath,descriptorfile))  # Delete bigmemory version of desc file until they stop using dput/dget
   description = describe(new.matrix)@description # description method is not exported and it just does this anyway
   bm = getRefClass(class)$new(.bm=new.matrix, .description=description, .backingfile=backingfile, .rownames=dimnames[[1]], .colnames=dimnames[[2]], ...)
-  if (!validObject(bm)) {
-    stop("Failed to create a valid ", class, "!\n")
-  }
   return( bm )
 }
 
@@ -358,6 +355,7 @@ setMethod("apply",signature(X="BigMatrix"),
 ##' @param type character type of big.matrix (double, integer, char)
 ##' @return BigMatrix
 ##' @examples
+##' x <- big.matrix(10,  2,  type='integer',  init = -5)
 ##' dnames = dimnames=list(letters[1:3],LETTERS[1:3])
 ##' x = matrix(1:9,ncol=3,dimnames=dnames)
 ##' ds = BigMatrix(x,tempfile())
