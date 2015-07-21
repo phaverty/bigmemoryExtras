@@ -372,6 +372,8 @@ BigMatrix <- function(x=NA_real_,backingfile,nrow,ncol,dimnames=NULL,type="doubl
 ##' Version <= 1.3 type and update it to the Version >=1.4 type.
 ##' @param object BigMatrix
 ##' @export
+##' @examples
+##' x <- big.matrix(10,  2,  type='integer',  init = -4)
 ##' @return BigMatrix
 updateBigMatrix <- function(object) {
     if ("descpath" %in% ls(object)) {
