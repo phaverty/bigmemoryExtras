@@ -4,7 +4,7 @@ Title: An extension of the bigmemory package with added safety, convenience,
     and a factor class.
 Version: 1.13.3
 Author: Peter M. Haverty
-Maintainer: Peter M. Haverty <phaverty@gene.com>
+Maintainer: Peter M. Haverty <peterhaverty@alumni.ucdavis.edu>
 Description: This package defines a "BigMatrix" ReferenceClass which adds
     safety and convenience features to the filebacked.big.matrix class from the
     bigmemory package. BigMatrix protects against segfaults by monitoring and
